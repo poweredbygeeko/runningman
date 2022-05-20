@@ -29,12 +29,14 @@ public class CollidingMesh : MonoBehaviour {
 
     public void OnCollisionEnter(Collision collision) {
 
-        bool isValidCollision = (!(collision.gameObject.transform.parent != null
-            && collision.gameObject.transform.parent.name.Equals("Player")) && !collision.gameObject.name.Contains("Piece"));
+        if (Controller.isCollisionsActive) {
+            bool isValidCollision = (!(collision.gameObject.transform.parent != null
+                && collision.gameObject.transform.parent.name.Equals("Player")) && !collision.gameObject.name.Contains("Piece"));
 
-        if (!Controller.isGameOver) {
-            if (isValidCollision) {
-                Controller.GameOver();
+            if (!Controller.isGameOver) {
+                if (isValidCollision) {
+                    Controller.GameOver();
+                }
             }
         }
 

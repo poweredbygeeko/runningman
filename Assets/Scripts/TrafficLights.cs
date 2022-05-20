@@ -55,26 +55,29 @@ public class TrafficLights : MonoBehaviour {
 
     private static void checkPlayerPos() {
 
-        if (!Controller.isGameOver) {
+        if (Controller.isCollisionsActive) {
 
-            Vector3 rayOrigin = GameObject.Find("Player").transform.position + new Vector3(0, 1, 0);
+            if (!Controller.isGameOver) {
 
-            Ray ray = new Ray(rayOrigin, - new Vector3(0, Player.playerSize.y * 2.5f, 0));
-            RaycastHit info;
+                Vector3 rayOrigin = GameObject.Find("Player").transform.position + new Vector3(0, 1, 0);
 
-            if (Physics.Raycast(ray, out info, Mathf.Infinity)) {
-                Debug.DrawLine(ray.origin, rayOrigin + ray.direction * 100, Color.green);
-                if (info.collider.gameObject.name.Contains("Piece")) {
-                    currentPiece = info.collider.gameObject;
+                Ray ray = new Ray(rayOrigin, -new Vector3(0, Player.playerSize.y * 2.5f, 0));
+                RaycastHit info;
+
+                if (Physics.Raycast(ray, out info, Mathf.Infinity)) {
+                    Debug.DrawLine(ray.origin, rayOrigin + ray.direction * 100, Color.green);
+                    if (info.collider.gameObject.name.Contains("Piece")) {
+                        currentPiece = info.collider.gameObject;
+                    }
+                } else {
+                    Debug.DrawLine(ray.origin, rayOrigin + ray.direction * 100, Color.red);
                 }
-            } else {
-                Debug.DrawLine(ray.origin, rayOrigin + ray.direction * 100, Color.red);
-            }
 
-            if (currentPiece != null) {
-                if (currentPiece.transform.localScale.z < 1) {
-                    if (state.Item1 == false) {
-                        Controller.GameOver();
+                if (currentPiece != null) {
+                    if (currentPiece.transform.localScale.z < 1) {
+                        if (state.Item1 == false) {
+                            Controller.GameOver();
+                        }
                     }
                 }
             }

@@ -17,6 +17,7 @@ public class Road : MonoBehaviour {
 
         new GameObject("Pieces").transform.parent = this.transform;
         new GameObject("Obstacles").transform.parent = this.transform;
+        new GameObject("Consumables").transform.parent = this.transform;
 
     }
 
@@ -25,8 +26,6 @@ public class Road : MonoBehaviour {
         for (int i = 0; i < drawDistance * 2; i++) {
             InitPiece();
         }
-
-        //GameObject.Find("Player").transform.position = Road.pieces[0].transform.position;
 
     }
 
@@ -87,6 +86,10 @@ public class Road : MonoBehaviour {
         pieces.Add(pieceIndex, piece);
         pieceIndex++;
 
+        if(Random.Range(0, 100) > 50) {
+            Consumable.InitConsumable(piece);
+        }
+
     }
 
     private void CheckInitPiece() {
@@ -112,4 +115,5 @@ public class Road : MonoBehaviour {
 
     }
 
+    
 }

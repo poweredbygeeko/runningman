@@ -20,9 +20,12 @@ public class Controller : MonoBehaviour {
 
     private static float startSwipeTime;
     private static float maxSwipeTime = .25f;
+    private static float boostTime = 0;
+    private static float maxBoostTime = 2.5f;
 
     public static bool isGameOver = false;
     public static bool isPaused = false;
+    public static bool isCollisionsActive = true;
 
     public void Awake() {
 
@@ -62,6 +65,7 @@ public class Controller : MonoBehaviour {
     public void Update() {
         UpdateScore();
         setCameraPos();
+        CheckBoostTime();
     }
 
     public static (bool, string) GetSwipe() {
@@ -126,6 +130,18 @@ public class Controller : MonoBehaviour {
 
     }
 
+    private static void CheckBoostTime() {
+        if(Time.timeScale > 1) {
+            boostTime += Time.deltaTime / Time.timeScale / Time.timeScale;
+            if(boostTime >= maxBoostTime) {
+                Time.timeScale = 1;
+                boostTime = 0;
+                isCollisionsActive = true;
+            } else if(boostTime >= maxBoostTime - 1) {
+                Time.timeScale -= (Time.timeScale - 1) * Time.deltaTime / Time.timeScale / Time.timeScale;
+            }
+        }
+    }
 
     private static void UpdateScore() {
         if (Player.isRunning) {
@@ -192,7 +208,8 @@ public class Controller : MonoBehaviour {
 
         Transform[] parents = {
             GameObject.Find("Road").transform.Find("Pieces"),
-            GameObject.Find("Road").transform.Find("Obstacles")
+            GameObject.Find("Road").transform.Find("Obstacles"),
+            GameObject.Find("Road").transform.Find("Consumables")
         };
 
         foreach (Transform parent in parents) {

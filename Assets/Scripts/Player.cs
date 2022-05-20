@@ -25,11 +25,17 @@ public class Player : MonoBehaviour {
         if (!Controller.isGameOver) {
             ProcessInput();
         }
+        
     }
 
     public void FixedUpdate() {
         if (!Controller.isGameOver) {
             move();
+        }
+        if (!Controller.isCollisionsActive) {
+            GameObject player = GameObject.Find("Player");
+            player.transform.rotation = Quaternion.Euler(0, 0, 0);
+            player.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, topSpeed);
         }
     }
 
